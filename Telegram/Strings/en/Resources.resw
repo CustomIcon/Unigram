@@ -127,6 +127,9 @@
   <data name="AccDescrClosePlayer" xml:space="preserve">
     <value>Close audio player</value>
   </data>
+  <data name="AccDescrCloseSearch" xml:space="preserve">
+    <value>Close search</value>
+  </data>
   <data name="AccDescrCollapsePanel" xml:space="preserve">
     <value>Collapse panel</value>
   </data>
@@ -2230,6 +2233,9 @@ It will be able to access your **IP address** and basic device info.</value>
   <data name="BotShare" xml:space="preserve">
     <value>Share</value>
   </data>
+  <data name="BotsMenuTitle" xml:space="preserve">
+    <value>Menu</value>
+  </data>
   <data name="BotStarsAvailableBalance" xml:space="preserve">
     <value>Available balance</value>
   </data>
@@ -3730,7 +3736,7 @@ Minimum length is 5 characters.</value>
     <value>Contact joined Telegram</value>
   </data>
   <data name="ContactNotRegistered" xml:space="preserve">
-    <value>{0} is not on Telegram yet, would you like to invite them to join?</value>
+    <value>{0} is not on Telegram yet.</value>
   </data>
   <data name="Contacts" xml:space="preserve">
     <value>Contacts</value>
@@ -5860,6 +5866,9 @@ about Telegram?</value>
   <data name="GroupContacts" xml:space="preserve">
     <value>Contacts in this group</value>
   </data>
+  <data name="GroupCreateDiscussionDefaultName" xml:space="preserve">
+    <value>{0} chat</value>
+  </data>
   <data name="GroupDeletedUndo" xml:space="preserve">
     <value>Group deleted</value>
   </data>
@@ -6225,6 +6234,9 @@ This setting does not affect group chats.</value>
   </data>
   <data name="JoinToGroupErrorNotExist" xml:space="preserve">
     <value>Sorry, this chat doesn&apos;t seem to exist.</value>
+  </data>
+  <data name="JumpToDate" xml:space="preserve">
+    <value>Jump to Date</value>
   </data>
   <data name="KeepMedia" xml:space="preserve">
     <value>Keep Media</value>
@@ -7234,6 +7246,14 @@ to unlock up to {0} similar channels.</value>
   </data>
   <data name="NoContactsYet" xml:space="preserve">
     <value>You have no contacts on Telegram yet</value>
+  </data>
+  <data name="NoContactsYet2" xml:space="preserve">
+    <value>You have no contacts
+on Telegram yet</value>
+  </data>
+  <data name="NoContactsYet2Sub" xml:space="preserve">
+    <value>Invite friends to try Telegram or search
+people by username.</value>
   </data>
   <data name="NoEmojiPack" xml:space="preserve">
     <value>No emoji pack</value>

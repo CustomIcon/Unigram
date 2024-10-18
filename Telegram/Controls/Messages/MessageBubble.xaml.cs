@@ -600,25 +600,26 @@ namespace Telegram.Controls.Messages
             {
                 if (message.IsLast)
                 {
-                    if (message.Id != _photoId || Photo == null || Photo.Visibility == Visibility.Collapsed)
+                    if (message.Id != _photoId || PhotoRoot == null || PhotoRoot.Visibility == Visibility.Collapsed)
                     {
-                        if (Photo == null)
+                        if (PhotoRoot == null)
                         {
                             PhotoRoot = GetTemplateChild(nameof(PhotoRoot)) as HyperlinkButton;
-                            Photo = GetTemplateChild(nameof(Photo)) as ProfilePicture;
                             PhotoRoot.Click += Photo_Click;
+
+                            Photo = GetTemplateChild(nameof(Photo)) as ProfilePicture;
                         }
 
                         _photoId = message.Id;
-                        Photo.Visibility = Visibility.Visible;
+                        PhotoRoot.Visibility = Visibility.Visible;
                         Photo.SetMessage(message);
                     }
                 }
-                else if (Photo != null)
+                else if (PhotoRoot != null)
                 {
                     _photoId = null;
 
-                    Photo.Visibility = Visibility.Collapsed;
+                    PhotoRoot.Visibility = Visibility.Collapsed;
                     Photo.Clear();
                 }
 
@@ -629,9 +630,10 @@ namespace Telegram.Controls.Messages
             }
             else
             {
-                if (Photo != null)
+                if (PhotoRoot != null)
                 {
                     _photoId = null;
+                    Photo = null;
                     UnloadObject(ref PhotoRoot);
                 }
 
@@ -1969,6 +1971,26 @@ namespace Telegram.Controls.Messages
                 return;
             }
 
+            void OpenUrl(string url, bool trust)
+            {
+                if (message.Content is MessageText text && MessageHelper.AreTheSame(text.LinkPreview?.Url, url, out _))
+                {
+                    message.Delegate.OpenWebPage(text);
+                }
+                else
+                {
+                    message.Delegate.OpenUrl(url, trust);
+                }
+            }
+
+            if (e.Type is TextEntityTypeTextUrl textUrl)
+            {
+                OpenUrl(textUrl.Url, true);
+            }
+            else if (e.Type is TextEntityTypeUrl && e.Data is string url)
+            {
+                OpenUrl(url, false);
+            }
             if (e.Type is TextEntityTypeBotCommand && e.Data is string command)
             {
                 message.Delegate.SendBotCommand(command);
@@ -1992,14 +2014,6 @@ namespace Telegram.Controls.Messages
             else if (e.Type is TextEntityTypeMentionName mentionName)
             {
                 message.Delegate.OpenUser(mentionName.UserId);
-            }
-            else if (e.Type is TextEntityTypeTextUrl textUrl)
-            {
-                message.Delegate.OpenUrl(textUrl.Url, true);
-            }
-            else if (e.Type is TextEntityTypeUrl && e.Data is string url)
-            {
-                message.Delegate.OpenUrl(url, false);
             }
             else if (e.Type is TextEntityTypeBankCardNumber && e.Data is string cardNumber)
             {
@@ -3003,14 +3017,15 @@ namespace Telegram.Controls.Messages
             HeaderPanel.Visibility = Visibility.Visible;
             HeaderLabel.Visibility = Visibility.Visible;
 
-            if (Photo == null)
+            if (PhotoRoot == null)
             {
                 PhotoRoot = GetTemplateChild(nameof(PhotoRoot)) as HyperlinkButton;
-                Photo = GetTemplateChild(nameof(Photo)) as ProfilePicture;
                 PhotoRoot.Click += Photo_Click;
+
+                Photo = GetTemplateChild(nameof(Photo)) as ProfilePicture;
             }
 
-            Photo.Visibility = Visibility.Visible;
+            PhotoRoot.Visibility = Visibility.Visible;
 
             if (obj is User user)
             {

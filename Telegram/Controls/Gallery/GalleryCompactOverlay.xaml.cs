@@ -64,6 +64,8 @@ namespace Telegram.Controls.Gallery
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
+            Logger.Info();
+
             Controls.Unload();
 
             _player = null;
@@ -112,6 +114,8 @@ namespace Telegram.Controls.Gallery
 
         private async void Controls_CompactClick(object sender, RoutedEventArgs e)
         {
+            Logger.Info();
+
             // TODO: WinUI - Rewrite
             if (_current == null)
             {
@@ -126,10 +130,17 @@ namespace Telegram.Controls.Gallery
 
             if (FeatureTokenGenerator.TryUnlockFeature("com.microsoft.windows.applicationwindow"))
             {
-                var prevId = CoreAppWindowPreview.GetIdFromWindow(_window);
-                var nextId = ApplicationView.GetForCurrentView().Id;
-                await ApplicationViewSwitcher.TryShowAsStandaloneAsync(nextId);
-                await ApplicationViewSwitcher.SwitchAsync(nextId, prevId);
+                try
+                {
+                    var prevId = CoreAppWindowPreview.GetIdFromWindow(_window);
+                    var nextId = ApplicationView.GetForCurrentView().Id;
+                    await ApplicationViewSwitcher.TryShowAsStandaloneAsync(nextId);
+                    await ApplicationViewSwitcher.SwitchAsync(nextId, prevId);
+                }
+                catch
+                {
+                    // All the remote procedure calls must be wrapped in a try-catch block
+                }
             }
 
             _ = GalleryWindow.ShowAsync(WindowContext.Current.Content.XamlRoot, _viewModel, null, 0, _player);
@@ -155,6 +166,8 @@ namespace Telegram.Controls.Gallery
 
         private void Close()
         {
+            Logger.Info("Closing");
+
             _ = _window.CloseAsync();
         }
 
@@ -176,10 +189,14 @@ namespace Telegram.Controls.Gallery
             // as the AppWindow will be destroyed as soon as the secondary window gets closed.
             if (_current?.Dispatcher.HasThreadAccess == true)
             {
+                Logger.Info("Exists on the current thread");
+
                 _current.Play(viewModel, player);
             }
             else
             {
+                Logger.Info("Does not exist, or different thread, create");
+
                 _current?.BeginOnUIThread(_current.Close);
 
                 // Reset the state so that hopefully the window gets the right size/position
